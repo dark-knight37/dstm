@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.xtext.unina.xdstmdata
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.xtext.unina.xdstmdata; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: DSTM4Rail,
+ DSTM,
+ org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.13.0",
+ org.antlr.runtime,
+ org.eclipse.xtext.util,
+ org.eclipse.emf.common,
+ org.eclipse.xtend.lib;bundle-version="2.13.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.xtext.unina.xdstmdata.xDstmdata.util,
+ org.xtext.unina.xdstmdata.serializer,
+ org.xtext.unina.xdstmdata.scoping,
+ org.xtext.unina.xdstmdata,
+ org.xtext.unina.xdstmdata.services,
+ org.xtext.unina.xdstmdata.xDstmdata.impl,
+ org.xtext.unina.xdstmdata.parser.antlr,
+ org.xtext.unina.xdstmdata.formatting2,
+ org.xtext.unina.xdstmdata.parser.antlr.internal,
+ org.xtext.unina.xdstmdata.validation,
+ org.xtext.unina.xdstmdata.xDstmdata,
+ org.xtext.unina.xdstmdata.generator
+Import-Package: org.apache.log4j

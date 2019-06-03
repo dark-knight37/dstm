@@ -5,7 +5,9 @@ The DSTM formalism have been defined by researchers belonging the University of 
 The formal syntax and semantics of the DSTM formalism, together with technical details have been published in scientific papers, such as:
 
 [1] Benerecetti, Massimo, et al. "Dynamic state machines for modelling railway control systems." Science of Computer Programming 133 (2017): 116-153.
+
 [2] Nardone, Roberto, et al. "Modeling railway control systems in Promela." International Workshop on Formal Techniques for Safety-Critical Systems. Springer, Cham, 2015.
+
 [3] Nardone, Roberto, et al. "Dynamic state machines for formalizing railway control system specifications." International Workshop on Formal Techniques for Safety-Critical Systems. Springer, Cham, 2014.
 
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="lib"/>
+	<classpathentry kind="src" path="model_test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DSTM"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.common_2.11.0.v20150512-0501.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore_2.11.0.v20150512-0501.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.xmi_2.10.2.v20150123-0348.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DSTMVerifier"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ModelMerge"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Tesqel"/>
+	<classpathentry kind="lib" path="lib/common-1.1.0-v20130531-0544.jar"/>
+	<classpathentry kind="lib" path="lib/common-3.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/guava-r05.jar"/>
+	<classpathentry kind="lib" path="lib/lpg.runtime.java_2.0.17.v201004271640.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.acceleo.common_3.6.3.201602090916.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.acceleo.engine_3.6.3.201602090916.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.acceleo.model_3.6.3.201602090916.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime-3.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.m2m.atl.common_3.6.0.v201505180909.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.m2m.atl.core_3.6.0.v201505180909.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.m2m.atl.core.emf_3.6.0.v201505180909.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.m2m.atl.emftvm_3.6.0.v201505180909.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.m2m.atl.emftvm.compiler_3.6.0.v201505180909.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.m2m.atl.emftvm.trace_3.6.0.v201505180909.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.m2m.atl.engine.emfvm_3.6.0.v201505180909.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.ocl_3.5.0.v20150521-1211.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.ocl.ecore_3.5.0.v20150525-1635.jar"/>
+	<classpathentry kind="lib" path="lib/org.osgi.core-4.1.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PromelaMM"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,20 @@
+Enum answer {accepted, refused};
+Enum version {V0, V1, V2};
+Enum registration {registered};
+Enum area {L0, L1};
+Enum msgId {SessionEstablished, Ack, TrainRegistration, SystemVersion, MovementAuthority};
+Enum ack{A0,A1};
+
+Struct MAnswer {answer};
+Struct MSessionEstablished {msgId, area, ack};
+Struct MAck {msgId};
+Struct MTrainRegistration {msgId, registration};
+Struct MSystemVersion {msgId, version};
+Struct MMovementAuthority {msgId, Int};
+
+Int Vcont;
+
+Chn external Crequest of Bool;
+Chn external CfromTrain of MSessionEstablished;
+Chn internal CtoTrain [10] of MSystemVersion;
+Chn internal Canswer [10] of MAnswer;

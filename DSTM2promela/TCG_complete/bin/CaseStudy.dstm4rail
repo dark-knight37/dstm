@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dstm4rail:DSTM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dstm4rail="dstm4rail" name="CommunicationEstablishment" main="//@machines[name='M_CommunicationEstablishment']">
+  <machines name="M_CommunicationEstablishment">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MCE_initial"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MCE_idle"/>
+    <vertexes xsi:type="dstm4rail:Fork" name="MCE_fork"/>
+    <vertexes xsi:type="dstm4rail:Join" name="MCE_join"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MCE_manageTrain" instantiation="//@machines[name='M_ManageTrain']"/>
+    <transitions name="MCE_T01" condition="" source="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_initial']" destination="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_idle']">
+      <actions>V_cont=0;</actions>
+    </transitions>
+    <transitions name="MCE_T02" trigger="C_request?" condition="V_cont==4" source="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_idle']" destination="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_idle']">
+      <actions>C_answer!&lt;answer::refused>;</actions>
+    </transitions>
+    <transitions name="MCE_T03" trigger="C_request?" condition="V_cont&lt;=3" source="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_idle']" destination="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_fork']">
+      <actions>C_request?&lt;V_chFrom,V_chTo>;</actions>
+      <actions>C_answer!&lt;answer::accepted>;</actions>
+      <actions>V_cont=(V_cont++);</actions>
+    </transitions>
+    <transitions name="MCE_T04" source="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_fork']" destination="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_idle']"/>
+    <transitions name="MCE_T05" source="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_fork']" destination="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_manageTrain']">
+      <par_instantiation>PchFromMMT=VchFrom;PchToMMT=VchTo;</par_instantiation>
+    </transitions>
+    <transitions name="MCE_T06" source="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_idle']" destination="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_join']"/>
+    <transitions name="MCE_T07" source="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_manageTrain']" destination="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_join']"/>
+    <transitions name="MCE_T08" source="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_join']" destination="//@machines[name='M_CommunicationEstablishment']/@vertexes[name='MCE_idle']">
+      <actions>V_cont=(V_cont--);</actions>
+    </transitions>
+  </machines>
+  <machines name="M_ManageTrain">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MMT_initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MMT_exiting"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MMT_idle"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MMT_establishment" instantiation="//@machines[name='M_SessionEstablishment']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MMT_entry" instantiation="//@machines[name='M_Entry']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MMT_som" instantiation="//@machines[name='M_StartOfMission']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MMT_giveMA" instantiation="//@machines[name='M_MovAuth']"/>
+    <transitions name="MMT_T01" trigger="" condition="" source="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_initial']" destination="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_idle']"/>
+    <transitions name="MMT_T02" condition="" source="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_idle']" destination="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_establishment']">
+      <par_instantiation>P_chFromMSE=P_chFromMMT;P_chToMSE=P_chToMMT;</par_instantiation>
+    </transitions>
+    <transitions name="MMT_T03" source="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_establishment']" destination="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_entry']" exiting_node="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_entry']">
+      <par_instantiation>P_chFromME=P_chFromMMT;P_chToME=P_chToMMT;</par_instantiation>
+    </transitions>
+    <transitions name="MMT_T04" source="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_establishment']" destination="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_som']" exiting_node="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_som']">
+      <par_instantiation>P_chFromMSOM=P_chFromMMT;P_chToMSOM=P_chToMMT;</par_instantiation>
+    </transitions>
+    <transitions name="MMT_T05" source="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_som']" destination="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_giveMA']">
+      <par_instantiation>P_chFromMMA=P_chFromMMT;P_chToMMA=P_chToMMT;</par_instantiation>
+    </transitions>
+    <transitions name="MMT_T06" source="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_entry']" destination="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_giveMA']" entering_node="//@machines[name='M_MovAuth']/@vertexes[name='MMA_afterEntry']">
+      <par_instantiation>P_chFromMMA=P_chFromMMT;P_chToMMA=P_chToMMT;</par_instantiation>
+    </transitions>
+    <transitions name="MMT_T07" source="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_establishment']" destination="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_exiting']" exiting_node="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_aborted']"/>
+    <transitions name="MMT_T08" source="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_giveMA']" destination="//@machines[name='M_ManageTrain']/@vertexes[name='MMT_exiting']">
+      <requirements>Identifier=SRS_MMT_T08;Title=Ending of Train management;Modified=2015-09-25 12:15:04;Url=null</requirements>
+    </transitions>
+  </machines>
+  <machines name="M_SessionEstablishment">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MSE_initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MSE_aborted"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MSE_som"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MSE_entry"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MSE_waitForAck"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MSE_waitForSessEstab"/>
+    <transitions name="MSE_T01" source="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_initial']" destination="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_waitForAck']">
+      <actions>P_chToMSE!&lt;msgId::SystemVersion,version::V1>;</actions>
+    </transitions>
+    <transitions name="MSE_T02" trigger="!P_chFromMSE?M_Ack" source="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_waitForAck']" destination="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_aborted']"/>
+    <transitions name="MSE_T03" trigger="P_chFromMSE?M_Ack" source="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_waitForAck']" destination="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_waitForSessEstab']"/>
+    <transitions name="MSE_T04" trigger="!P_chFromMSE?M_SessionEstablished" source="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_waitForSessEstab']" destination="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_aborted']"/>
+    <transitions name="MSE_T05" trigger="P_chFromMSE?M_SessionEstablished" condition="P_chFromMSE[?&lt;_,area::L0,_,_>]" source="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_waitForSessEstab']" destination="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_som']"/>
+    <transitions name="MSE_T06" trigger="P_chFromMSE?M_SessionEstablished" condition="P_chFromMSE[?&lt;_,area::L1,_,_>]" source="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_waitForSessEstab']" destination="//@machines[name='M_SessionEstablishment']/@vertexes[name='MSE_entry']">
+      <requirements>Identifier=SRS_MSE_T06;Title=Session establishment;Modified=2015-09-25 12:15:04;Url=null</requirements>
+    </transitions>
+  </machines>
+  <machines name="M_MovAuth">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MMA_initial"/>
+    <vertexes xsi:type="dstm4rail:EnteringNode" name="MMA_afterEntry"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MMA_exiting"/>
+    <vertexes xsi:type="dstm4rail:Fork" name="MMA_fork"/>
+    <vertexes xsi:type="dstm4rail:Join" name="MMA_join1"/>
+    <vertexes xsi:type="dstm4rail:Join" name="MMA_join2"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MMA_sendMovementAuthority"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MMA_registerTrain"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MMA_centralManag" instantiation="//@machines[name='M_CentralControl']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MMA_periodicMA" instantiation="//@machines[name='M_PeriodicMA']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MMA_emergency" instantiation="//@machines[name='M_EmergencyManagement']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="MMA_eom" instantiation="//@machines[name='M_EndOfMission']"/>
+    <transitions name="MMA_T01" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_initial']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_sendMovementAuthority']"/>
+    <transitions name="MMA_T02" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_afterEntry']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_registerTrain']"/>
+    <transitions name="MMA_T03" trigger="P_chFromMMA?M_TrainRegistration" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_registerTrain']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_sendMovementAuthority']"/>
+    <transitions name="MMA_T04" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_sendMovementAuthority']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_fork']">
+      <actions>P_chToMMA!&lt;msgId::MovementAuthority,10>;</actions>
+    </transitions>
+    <transitions name="MMA_T05" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_fork']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_centralManag']">
+      <par_instantiation>P_chFromMCC=P_chFromMMA;P_chToMCC=P_chToMMA;</par_instantiation>
+    </transitions>
+    <transitions name="MMA_T06" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_fork']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_periodicMA']">
+      <par_instantiation>P_chFromMPMA=P_chFromMMA;P_chToMPMA=P_chToMMA;</par_instantiation>
+    </transitions>
+    <transitions name="MMA_T07" is_preemptive="true" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_centralManag']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_join1']" exiting_node="//@machines[name='M_CentralControl']/@vertexes[name='MCC_ues']"/>
+    <transitions name="MMA_T08" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_centralManag']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_join2']"/>
+    <transitions name="MMA_T09" condition="" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_periodicMA']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_join1']"/>
+    <transitions name="MMA_T10" is_preemptive="true" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_periodicMA']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_join2']" exiting_node="//@machines[name='M_PeriodicMA']/@vertexes[name='MPMA_eom']"/>
+    <transitions name="MMA_T11" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_join1']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_emergency']">
+      <par_instantiation>P_chFromMEM=P_chFromMMA;P_chToMEM=P_chToMMA;</par_instantiation>
+    </transitions>
+    <transitions name="MMA_T12" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_join2']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_eom']">
+      <par_instantiation>P_chFromMEOM=P_chFromMMA;P_chToMEOM=P_chToMMA;</par_instantiation>
+    </transitions>
+    <transitions name="MMA_T13" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_emergency']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_exiting']"/>
+    <transitions name="MMA_T14" source="//@machines[name='M_MovAuth']/@vertexes[name='MMA_eom']" destination="//@machines[name='M_MovAuth']/@vertexes[name='MMA_exiting']"/>
+  </machines>
+  <machines name="M_Entry">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="ME_initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="ME_exiting"/>
+  </machines>
+  <machines name="M_StartOfMission">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MSOM_initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MSOM_exiting"/>
+  </machines>
+  <machines name="M_CentralControl">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MCC_initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MCC_ues"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MCC_exiting"/>
+  </machines>
+  <machines name="M_PeriodicMA">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MPMA_initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MPMA_eom"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MPMA_exiting"/>
+  </machines>
+  <machines name="M_EmergencyManagement">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MEM_initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MEM_exiting"/>
+  </machines>
+  <machines name="M_EndOfMission">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MEOM_initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MEOM_exiting"/>
+  </machines>
+  <machines name="M_EnvConstraints">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="MEC_initial"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MEC_waitFor1Train"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MEC_waitFor2Train"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MEC_waitFor3Train"/>
+    <vertexes xsi:type="dstm4rail:Node" name="MEC_waitFor4Train"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="MEC_endOfRequests"/>
+    <transitions name="MEC_T01" source="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_initial']" destination="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_waitFor1Train']"/>
+    <transitions name="MEC_T02" source="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_waitFor1Train']" destination="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_waitFor2Train']">
+      <actions>C_request!&lt;C_fromTrain_1,C_toTrain_1>;</actions>
+    </transitions>
+    <transitions name="MEC_T03" source="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_waitFor2Train']" destination="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_waitFor3Train']">
+      <actions>C_request!&lt;C_fromTrain_2,C_toTrain_2>;</actions>
+    </transitions>
+    <transitions name="MEC_T04" condition="" source="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_waitFor3Train']" destination="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_waitFor4Train']">
+      <actions>C_request!&lt;C_fromTrain_3,C_toTrain_3>;</actions>
+    </transitions>
+    <transitions name="MEC_T05" source="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_waitFor4Train']" destination="//@machines[name='M_EnvConstraints']/@vertexes[name='MEC_endOfRequests']">
+      <actions>C_request!&lt;C_fromTrain_4,C_toTrain_4>;</actions>
+    </transitions>
+  </machines>
+</dstm4rail:DSTM>

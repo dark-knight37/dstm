@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dstm4rail:DSTM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dstm4rail="dstm4rail" name="model" main="//@machines[name='mainM']">
+  <machines name="mainM">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="init"/>
+    <vertexes xsi:type="dstm4rail:Node" name="idle"/>
+    <vertexes xsi:type="dstm4rail:Box" name="b" instantiation="//@machines[name='master'] //@machines[name='slave']"/>
+    <transitions name="T01" source="//@machines[name='mainM']/@vertexes[name='init']" destination="//@machines[name='mainM']/@vertexes[name='idle']"/>
+    <transitions name="T02" source="//@machines[name='mainM']/@vertexes[name='idle']" destination="//@machines[name='mainM']/@vertexes[name='b']"/>
+  </machines>
+  <machines name="master">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="init"/>
+    <vertexes xsi:type="dstm4rail:Node" name="ready"/>
+    <vertexes xsi:type="dstm4rail:Node" name="waiting"/>
+    <transitions name="T0" source="//@machines[name='master']/@vertexes[name='init']" destination="//@machines[name='master']/@vertexes[name='ready']"/>
+    <transitions name="T1" source="//@machines[name='master']/@vertexes[name='ready']" destination="//@machines[name='master']/@vertexes[name='waiting']"/>
+    <transitions name="T2" source="//@machines[name='master']/@vertexes[name='waiting']" destination="//@machines[name='master']/@vertexes[name='ready']"/>
+  </machines>
+  <machines name="slave">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="init"/>
+    <vertexes xsi:type="dstm4rail:Node" name="ready"/>
+    <vertexes xsi:type="dstm4rail:Node" name="read"/>
+    <vertexes xsi:type="dstm4rail:Node" name="WSRcheckOutputValue"/>
+    <vertexes xsi:type="dstm4rail:Node" name="WSRcheckOutputAddress"/>
+    <vertexes xsi:type="dstm4rail:Node" name="WSRrequestProcessing"/>
+    <vertexes xsi:type="dstm4rail:Node" name="WSRwriteSingleRegister"/>
+    <vertexes xsi:type="dstm4rail:Node" name="WSRsendResponse"/>
+    <vertexes xsi:type="dstm4rail:Node" name="WSRsendException"/>
+    <transitions name="T0" source="//@machines[name='slave']/@vertexes[name='init']" destination="//@machines[name='slave']/@vertexes[name='ready']"/>
+    <transitions name="T1" trigger="channel?toSlaveMsg" source="//@machines[name='slave']/@vertexes[name='ready']" destination="//@machines[name='slave']/@vertexes[name='read']">
+      <actions>channel[?]&lt;vfcode,vsubcode,vaddress,vvalue></actions>
+    </transitions>
+    <transitions name="T2WSR" condition="vfcode==fcode::WriteSingleRegister" source="//@machines[name='slave']/@vertexes[name='read']" destination="//@machines[name='slave']/@vertexes[name='WSRcheckOutputValue']"/>
+    <transitions name="T3WSR" condition="(vvalue>=0 &amp;&amp; vvalue&lt;=65535)" source="//@machines[name='slave']/@vertexes[name='WSRcheckOutputValue']" destination="//@machines[name='slave']/@vertexes[name='WSRcheckOutputAddress']"/>
+    <transitions name="T3WSRex" condition="(vvalue&lt;0 || vvalue>65535)" source="//@machines[name='slave']/@vertexes[name='WSRcheckOutputValue']" destination="//@machines[name='slave']/@vertexes[name='WSRsendException']">
+      <actions>exc=excode::x03</actions>
+    </transitions>
+    <transitions name="T4WSR" condition="(vaddress>=0 &amp;&amp; vaddress&lt;=1)" source="//@machines[name='slave']/@vertexes[name='WSRcheckOutputAddress']" destination="//@machines[name='slave']/@vertexes[name='WSRrequestProcessing']"/>
+    <transitions name="T4WSRex" condition="(vaddress&lt;0 || vaddress>1)" source="//@machines[name='slave']/@vertexes[name='WSRcheckOutputAddress']" destination="//@machines[name='slave']/@vertexes[name='WSRsendException']">
+      <actions>exc=excode::x02</actions>
+    </transitions>
+    <transitions name="T51WSR" condition="vaddress==0" source="//@machines[name='slave']/@vertexes[name='WSRrequestProcessing']" destination="//@machines[name='slave']/@vertexes[name='WSRwriteSingleRegister']">
+      <actions>Reg01=vvalue</actions>
+    </transitions>
+    <transitions name="T52WSR" condition="vaddress==1" source="//@machines[name='slave']/@vertexes[name='WSRrequestProcessing']" destination="//@machines[name='slave']/@vertexes[name='WSRwriteSingleRegister']">
+      <actions>Reg02=vvalue</actions>
+    </transitions>
+    <transitions name="T61WSR" condition="(vaddress==0 &amp;&amp; Reg01==vvalue)" source="//@machines[name='slave']/@vertexes[name='WSRwriteSingleRegister']" destination="//@machines[name='slave']/@vertexes[name='WSRsendResponse']"/>
+    <transitions name="T61WSRex" condition="(vaddress==0 &amp;&amp; Reg01!=vvalue)" source="//@machines[name='slave']/@vertexes[name='WSRwriteSingleRegister']" destination="//@machines[name='slave']/@vertexes[name='WSRsendException']">
+      <actions>exc=excode::x04</actions>
+    </transitions>
+    <transitions name="T62WSR" condition="(vaddress==1 &amp;&amp; Reg02==vvalue)" source="//@machines[name='slave']/@vertexes[name='WSRwriteSingleRegister']" destination="//@machines[name='slave']/@vertexes[name='WSRsendResponse']"/>
+    <transitions name="T62WSRex" condition="(vaddress==1 &amp;&amp; Reg02!=vvalue)" source="//@machines[name='slave']/@vertexes[name='WSRwriteSingleRegister']" destination="//@machines[name='slave']/@vertexes[name='WSRsendException']">
+      <actions>exc=excode::x04</actions>
+    </transitions>
+    <transitions name="T7WSR" source="//@machines[name='slave']/@vertexes[name='WSRsendResponse']" destination="//@machines[name='slave']/@vertexes[name='ready']">
+      <actions>channel!&lt;fcode::WriteSingleRegister,excode::NONE,vaddress,vvalue></actions>
+    </transitions>
+    <transitions name="T7WSRex" source="//@machines[name='slave']/@vertexes[name='WSRsendException']" destination="//@machines[name='slave']/@vertexes[name='ready']">
+      <actions>channel!&lt;fcode::WriteSingleRegister,exc,vaddress,vvalue></actions>
+    </transitions>
+  </machines>
+</dstm4rail:DSTM>

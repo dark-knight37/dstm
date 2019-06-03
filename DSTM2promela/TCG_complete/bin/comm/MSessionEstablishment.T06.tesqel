@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="ASCII"?>
+<tesqel:TestSequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tesqel="tesqel" name="MSessionEstablishment.T06">
+  <initial>MCommunicationEstablishment.initial</initial>
+  <compoundFiring>
+    <firing>
+      <phase xsi:type="tesqel:Action" rvalue="0" lvalue="Vcont"/>
+      <current>MCommunicationEstablishment.initial</current>
+      <transition>MCommunicationEstablishment.T01</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+  <compoundFiring order="1">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;accepted>" lvalue="Canswer" kind="send"/>
+      <phase xsi:type="tesqel:Action" order="2" rvalue="1" lvalue="Vcont"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T03</transition>
+      <transition>MCommunicationEstablishment.T04</transition>
+      <transition>MCommunicationEstablishment.T05</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <firing order="1">
+      <phase xsi:type="tesqel:Action" rvalue="&lt;SystemVersion,V1>" lvalue="CtoTrain" kind="send"/>
+      <current>MSessionEstablishment.initial</current>
+      <transition>MSessionEstablishment.T01</transition>
+      <next>MSessionEstablishment.waitForAck</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+    <link from="//@compoundFiring.1/@firing.0" to="//@compoundFiring.1/@firing.1"/>
+  </compoundFiring>
+  <compoundFiring order="2">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;accepted>" lvalue="Canswer" kind="send"/>
+      <phase xsi:type="tesqel:Action" order="2" rvalue="2" lvalue="Vcont"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T03</transition>
+      <transition>MCommunicationEstablishment.T04</transition>
+      <transition>MCommunicationEstablishment.T05</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <firing order="1">
+      <phase xsi:type="tesqel:Action" rvalue="&lt;SystemVersion,V1>" lvalue="CtoTrain" kind="send"/>
+      <current>MSessionEstablishment.initial</current>
+      <transition>MSessionEstablishment.T01</transition>
+      <next>MSessionEstablishment.waitForAck</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+    <link from="//@compoundFiring.2/@firing.0" to="//@compoundFiring.2/@firing.1"/>
+  </compoundFiring>
+  <compoundFiring order="3">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;accepted>" lvalue="Canswer" kind="send"/>
+      <phase xsi:type="tesqel:Action" order="2" rvalue="3" lvalue="Vcont"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T03</transition>
+      <transition>MCommunicationEstablishment.T04</transition>
+      <transition>MCommunicationEstablishment.T05</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <firing order="1">
+      <phase xsi:type="tesqel:Action" rvalue="&lt;SystemVersion,V1>" lvalue="CtoTrain" kind="send"/>
+      <current>MSessionEstablishment.initial</current>
+      <transition>MSessionEstablishment.T01</transition>
+      <next>MSessionEstablishment.waitForAck</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+    <link from="//@compoundFiring.3/@firing.0" to="//@compoundFiring.3/@firing.1"/>
+  </compoundFiring>
+  <compoundFiring order="4">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;accepted>" lvalue="Canswer" kind="send"/>
+      <phase xsi:type="tesqel:Action" order="2" rvalue="4" lvalue="Vcont"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T03</transition>
+      <transition>MCommunicationEstablishment.T04</transition>
+      <transition>MCommunicationEstablishment.T05</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <firing order="1">
+      <phase xsi:type="tesqel:Action" rvalue="&lt;SystemVersion,V1>" lvalue="CtoTrain" kind="send"/>
+      <current>MSessionEstablishment.initial</current>
+      <transition>MSessionEstablishment.T01</transition>
+      <next>MSessionEstablishment.waitForAck</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+    <link from="//@compoundFiring.4/@firing.0" to="//@compoundFiring.4/@firing.1"/>
+  </compoundFiring>
+  <compoundFiring order="5">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;refused>" lvalue="Canswer" kind="send"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T02</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+  <compoundFiring order="6">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;refused>" lvalue="Canswer" kind="send"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T02</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+  <compoundFiring order="7">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;refused>" lvalue="Canswer" kind="send"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T02</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+  <compoundFiring order="8">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;refused>" lvalue="Canswer" kind="send"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T02</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+  <compoundFiring order="9">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;refused>" lvalue="Canswer" kind="send"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T02</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+  <compoundFiring order="10">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;refused>" lvalue="Canswer" kind="send"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T02</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+  <compoundFiring order="11">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="CfromTrain" message="&lt;SessionEstablished,L0,A1>"/>
+      <phase xsi:type="tesqel:Condition" order="1" rvalue="&lt;SessionEstablished,L0,A1>" lvalue="CfromTrain" kind="message"/>
+      <current>MSessionEstablishment.waitForAck</current>
+      <transition>MSessionEstablishment.T03</transition>
+      <next>MSessionEstablishment.waitForSessEstab</next>
+    </firing>
+    <firing order="1">
+      <phase xsi:type="tesqel:Trigger" channel="CfromTrain" message="&lt;SessionEstablished,L0,A1>"/>
+      <phase xsi:type="tesqel:Condition" order="1" rvalue="&lt;SessionEstablished,L0,A1>" lvalue="CfromTrain" kind="message"/>
+      <current>MSessionEstablishment.waitForAck</current>
+      <transition>MSessionEstablishment.T03</transition>
+      <next>MSessionEstablishment.waitForSessEstab</next>
+    </firing>
+    <firing order="2">
+      <phase xsi:type="tesqel:Trigger" channel="CfromTrain" message="&lt;SessionEstablished,L0,A1>"/>
+      <phase xsi:type="tesqel:Condition" order="1" rvalue="&lt;SessionEstablished,L0,A1>" lvalue="CfromTrain" kind="message"/>
+      <current>MSessionEstablishment.waitForAck</current>
+      <transition>MSessionEstablishment.T03</transition>
+      <next>MSessionEstablishment.waitForSessEstab</next>
+    </firing>
+    <firing order="3">
+      <phase xsi:type="tesqel:Trigger" channel="CfromTrain" message="&lt;SessionEstablished,L0,A1>"/>
+      <phase xsi:type="tesqel:Condition" order="1" rvalue="&lt;SessionEstablished,L0,A1>" lvalue="CfromTrain" kind="message"/>
+      <current>MSessionEstablishment.waitForAck</current>
+      <transition>MSessionEstablishment.T03</transition>
+      <next>MSessionEstablishment.waitForSessEstab</next>
+    </firing>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A1>"/>
+    <link from="//@compoundFiring.11/@firing.0" to="//@compoundFiring.11/@firing.1"/>
+    <link from="//@compoundFiring.11/@firing.1" to="//@compoundFiring.11/@firing.2"/>
+    <link from="//@compoundFiring.11/@firing.2" to="//@compoundFiring.11/@firing.3"/>
+  </compoundFiring>
+  <compoundFiring order="12">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="CfromTrain" message="&lt;SessionEstablished,L1,A1>"/>
+      <phase xsi:type="tesqel:Condition" order="1" rvalue="&lt;SessionEstablished,L1,A1>" lvalue="CfromTrain" kind="message"/>
+      <current>MSessionEstablishment.waitForSessEstab</current>
+      <transition>MSessionEstablishment.T06</transition>
+      <next>MSessionEstablishment.entry</next>
+    </firing>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L1,A1>"/>
+  </compoundFiring>
+  <link from="//@compoundFiring.0" to="//@compoundFiring.1"/>
+  <link from="//@compoundFiring.1" to="//@compoundFiring.2"/>
+  <link from="//@compoundFiring.2" to="//@compoundFiring.3"/>
+  <link from="//@compoundFiring.3" to="//@compoundFiring.4"/>
+  <link from="//@compoundFiring.4" to="//@compoundFiring.5"/>
+  <link from="//@compoundFiring.5" to="//@compoundFiring.6"/>
+  <link from="//@compoundFiring.6" to="//@compoundFiring.7"/>
+  <link from="//@compoundFiring.7" to="//@compoundFiring.8"/>
+  <link from="//@compoundFiring.8" to="//@compoundFiring.9"/>
+  <link from="//@compoundFiring.9" to="//@compoundFiring.10"/>
+  <link from="//@compoundFiring.10" to="//@compoundFiring.11"/>
+  <link from="//@compoundFiring.11" to="//@compoundFiring.12"/>
+</tesqel:TestSequence>

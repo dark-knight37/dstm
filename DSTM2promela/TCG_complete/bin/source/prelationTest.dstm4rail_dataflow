@@ -1,0 +1,7 @@
+// DataFlow file about prelationTest.dstm4rail_dstm4rail
+// Date generation : 01/05/2018 at 09:36:52 AM CEST
+
+
+Int counter;
+
+Chn internal signal[1] of Bool;

@@ -1,0 +1,26 @@
+// DataFlow file about cruisecontrol.dstm4rail_dstm4rail
+// Date generation : 13/12/2017 at 02:06:09 PM CET
+
+Chn external correct of Bool;
+Chn external slow of Bool;
+Chn external fast of Bool;
+Chn external on of Bool;
+Chn external set of Bool;
+Chn external brake of Bool;
+Chn external resume of Bool;
+Chn external accP of Bool;
+Chn external accR of Bool;
+
+Int T02;
+Int T03;
+Int T04;
+Int T05;
+Int T06;
+Int T07;
+Int T08;
+Int T09;
+Int T10;
+Int T11;
+Int T12;
+Int T13;
+Int T14;

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dstm4rail:DSTM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dstm4rail="dstm4rail" name="CommunicationEstablishment" main="//@machines[name='MCommunicationEstablishment']">
+  <machines name="MCommunicationEstablishment">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="initial"/>
+    <vertexes xsi:type="dstm4rail:Node" name="idle"/>
+    <vertexes xsi:type="dstm4rail:Fork" name="fork"/>
+    <vertexes xsi:type="dstm4rail:Join" name="join"/>
+    <vertexes xsi:type="dstm4rail:Box" name="manageTrain" instantiation="//@machines[name='MSessionEstablishment']"/>
+    <transitions name="T01" condition="" source="//@machines[name='MCommunicationEstablishment']/@vertexes[name='initial']" destination="//@machines[name='MCommunicationEstablishment']/@vertexes[name='idle']">
+      <actions>Vcont=0;</actions>
+    </transitions>
+    <transitions name="T02" trigger="Crequest?" condition="Vcont==4" source="//@machines[name='MCommunicationEstablishment']/@vertexes[name='idle']" destination="//@machines[name='MCommunicationEstablishment']/@vertexes[name='idle']">
+      <actions>Canswer!&lt;answer::refused>;</actions>
+    </transitions>
+    <transitions name="T03" trigger="Crequest?" condition="Vcont&lt;=3" source="//@machines[name='MCommunicationEstablishment']/@vertexes[name='idle']" destination="//@machines[name='MCommunicationEstablishment']/@vertexes[name='fork']">
+      <actions>Canswer!&lt;answer::accepted>;</actions>
+      <actions>Vcont=(Vcont++);</actions>
+    </transitions>
+    <transitions name="T04" source="//@machines[name='MCommunicationEstablishment']/@vertexes[name='fork']" destination="//@machines[name='MCommunicationEstablishment']/@vertexes[name='idle']"/>
+    <transitions name="T05" source="//@machines[name='MCommunicationEstablishment']/@vertexes[name='fork']" destination="//@machines[name='MCommunicationEstablishment']/@vertexes[name='manageTrain']"/>
+    <transitions name="T06" source="//@machines[name='MCommunicationEstablishment']/@vertexes[name='idle']" destination="//@machines[name='MCommunicationEstablishment']/@vertexes[name='join']"/>
+    <transitions name="T07" source="//@machines[name='MCommunicationEstablishment']/@vertexes[name='manageTrain']" destination="//@machines[name='MCommunicationEstablishment']/@vertexes[name='join']"/>
+    <transitions name="T08" source="//@machines[name='MCommunicationEstablishment']/@vertexes[name='join']" destination="//@machines[name='MCommunicationEstablishment']/@vertexes[name='idle']">
+      <actions>Vcont=(Vcont--);</actions>
+    </transitions>
+  </machines>
+  <machines name="MSessionEstablishment">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="initial"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="aborted"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="som"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="entry"/>
+    <vertexes xsi:type="dstm4rail:Node" name="waitForAck"/>
+    <vertexes xsi:type="dstm4rail:Node" name="waitForSessEstab"/>
+    <transitions name="T01" source="//@machines[name='MSessionEstablishment']/@vertexes[name='initial']" destination="//@machines[name='MSessionEstablishment']/@vertexes[name='waitForAck']">
+      <actions>CtoTrain!&lt;msgId::SystemVersion,version::V1>;</actions>
+    </transitions>
+    <transitions name="T02" trigger="CfromTrain?" condition="CfromTrain[?&lt;_,_,ack::A0>]" source="//@machines[name='MSessionEstablishment']/@vertexes[name='waitForAck']" destination="//@machines[name='MSessionEstablishment']/@vertexes[name='aborted']"/>
+    <transitions name="T03" trigger="CfromTrain?" condition="CfromTrain[?&lt;_,_,ack::A1>]" source="//@machines[name='MSessionEstablishment']/@vertexes[name='waitForAck']" destination="//@machines[name='MSessionEstablishment']/@vertexes[name='waitForSessEstab']"/>
+    <transitions name="T04" trigger="CfromTrain?" condition="(CfromTrain[?&lt;_,area::L0,ack::A0>] || CfromTrain[?&lt;_,area::L1,ack::A0>])" source="//@machines[name='MSessionEstablishment']/@vertexes[name='waitForSessEstab']" destination="//@machines[name='MSessionEstablishment']/@vertexes[name='aborted']"/>
+    <transitions name="T05" trigger="CfromTrain?" condition="CfromTrain[?&lt;_,area::L0,ack::A1>]" source="//@machines[name='MSessionEstablishment']/@vertexes[name='waitForSessEstab']" destination="//@machines[name='MSessionEstablishment']/@vertexes[name='som']"/>
+    <transitions name="T06" trigger="CfromTrain?" condition="CfromTrain[?&lt;_,area::L1,ack::A1>]" source="//@machines[name='MSessionEstablishment']/@vertexes[name='waitForSessEstab']" destination="//@machines[name='MSessionEstablishment']/@vertexes[name='entry']">
+      <requirements>Identifier=SRS_MSE_T06;Title=Session establishment;Modified=2015-09-25 12:15:04;Url=null</requirements>
+    </transitions>
+  </machines>
+</dstm4rail:DSTM>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dstm4rail:DSTM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dstm4rail="dstm4rail" name="model" main="//@machines[name='Main']">
+  <machines name="Main">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="initial"/>
+    <vertexes xsi:type="dstm4rail:Node" name="idle1"/>
+    <vertexes xsi:type="dstm4rail:Box" name="counterBox" instantiation="//@machines[name='Counter']"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="interrupted"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="stopped"/>
+    <transitions name="T1" source="//@machines[name='Main']/@vertexes[name='initial']" destination="//@machines[name='Main']/@vertexes[name='idle1']"/>
+    <transitions name="T2" source="//@machines[name='Main']/@vertexes[name='idle1']" destination="//@machines[name='Main']/@vertexes[name='counterBox']">
+      <par_instantiation>P_to=100;</par_instantiation>
+    </transitions>
+    <transitions name="T3" trigger="signal?" source="//@machines[name='Main']/@vertexes[name='counterBox']" destination="//@machines[name='Main']/@vertexes[name='interrupted']"/>
+    <transitions name="T4" source="//@machines[name='Main']/@vertexes[name='counterBox']" destination="//@machines[name='Main']/@vertexes[name='stopped']" exiting_node="//@machines[name='Counter']/@vertexes[name='limit']"/>
+  </machines>
+  <machines name="Counter">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="default"/>
+    <vertexes xsi:type="dstm4rail:Node" name="idle2"/>
+    <vertexes xsi:type="dstm4rail:Fork" name="fk"/>
+    <vertexes xsi:type="dstm4rail:Box" name="boxIncr1" instantiation="//@machines[name='Incrementer']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="boxIncr2" instantiation="//@machines[name='Incrementer']"/>
+    <vertexes xsi:type="dstm4rail:Join" name="jn"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="limit"/>
+    <transitions name="T5" source="//@machines[name='Counter']/@vertexes[name='default']" destination="//@machines[name='Counter']/@vertexes[name='idle2']"/>
+    <transitions name="T6" source="//@machines[name='Counter']/@vertexes[name='idle2']" destination="//@machines[name='Counter']/@vertexes[name='fk']"/>
+    <transitions name="T7" source="//@machines[name='Counter']/@vertexes[name='fk']" destination="//@machines[name='Counter']/@vertexes[name='boxIncr1']">
+      <par_instantiation>P_limit=P_to;</par_instantiation>
+    </transitions>
+    <transitions name="T8" source="//@machines[name='Counter']/@vertexes[name='fk']" destination="//@machines[name='Counter']/@vertexes[name='boxIncr2']" entering_node="//@machines[name='Incrementer']/@vertexes[name='byTwo']">
+      <par_instantiation>P_limit=P_to;</par_instantiation>
+    </transitions>
+    <transitions name="T9" is_preemptive="true" source="//@machines[name='Counter']/@vertexes[name='boxIncr1']" destination="//@machines[name='Counter']/@vertexes[name='jn']"/>
+    <transitions name="T10" source="//@machines[name='Counter']/@vertexes[name='boxIncr2']" destination="//@machines[name='Counter']/@vertexes[name='jn']"/>
+    <transitions name="T11" source="//@machines[name='Counter']/@vertexes[name='jn']" destination="//@machines[name='Counter']/@vertexes[name='limit']"/>
+  </machines>
+  <machines name="Incrementer">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="byOne"/>
+    <vertexes xsi:type="dstm4rail:EnteringNode" name="byTwo"/>
+    <vertexes xsi:type="dstm4rail:Node" name="simpleIncr"/>
+    <vertexes xsi:type="dstm4rail:Node" name="doubleIncr"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="finished"/>
+    <transitions name="T12" source="//@machines[name='Incrementer']/@vertexes[name='byOne']" destination="//@machines[name='Incrementer']/@vertexes[name='simpleIncr']"/>
+    <transitions name="T13" source="//@machines[name='Incrementer']/@vertexes[name='byTwo']" destination="//@machines[name='Incrementer']/@vertexes[name='doubleIncr']"/>
+    <transitions name="T14" condition="(x&lt;P_limit)" source="//@machines[name='Incrementer']/@vertexes[name='simpleIncr']" destination="//@machines[name='Incrementer']/@vertexes[name='simpleIncr']">
+      <actions>x=(x+1)</actions>
+    </transitions>
+    <transitions name="T15" source="//@machines[name='Incrementer']/@vertexes[name='doubleIncr']" destination="//@machines[name='Incrementer']/@vertexes[name='doubleIncr']">
+      <actions>x=(x+2)</actions>
+    </transitions>
+    <transitions name="T16" condition="x>=P_limit" source="//@machines[name='Incrementer']/@vertexes[name='simpleIncr']" destination="//@machines[name='Incrementer']/@vertexes[name='finished']"/>
+  </machines>
+</dstm4rail:DSTM>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dstm4rail:DSTM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dstm4rail="dstm4rail" name="Register" main="//@machines[name='MRegister']">
+  <machines name="MRegister">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="initRegister"/>
+    <vertexes xsi:type="dstm4rail:Node" name="idle"/>
+    <vertexes xsi:type="dstm4rail:Fork" name="forkRegister"/>
+    <vertexes xsi:type="dstm4rail:Box" name="boxFF0" instantiation="//@machines[name='MFlipFlop']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="boxFF1" instantiation="//@machines[name='MFlipFlop']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="boxFF2" instantiation="//@machines[name='MFlipFlop']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="boxFF3" instantiation="//@machines[name='MFlipFlop']"/>
+    <vertexes xsi:type="dstm4rail:Join" name="joinRegister"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="exitingRegister"/>
+    <transitions name="T1" trigger="" source="//@machines[name='MRegister']/@vertexes[name='initRegister']" destination="//@machines[name='MRegister']/@vertexes[name='idle']">
+      <actions>VCont=0;</actions>
+    </transitions>
+    <transitions name="T2" trigger="PowerOn?" condition="(PowerOn[?&lt;true>] &amp;&amp; VCont&lt;1)" source="//@machines[name='MRegister']/@vertexes[name='idle']" destination="//@machines[name='MRegister']/@vertexes[name='forkRegister']">
+      <actions>VCont=(VCont++);</actions>
+    </transitions>
+    <transitions name="T3" source="//@machines[name='MRegister']/@vertexes[name='forkRegister']" destination="//@machines[name='MRegister']/@vertexes[name='idle']"/>
+    <transitions name="T4" source="//@machines[name='MRegister']/@vertexes[name='forkRegister']" destination="//@machines[name='MRegister']/@vertexes[name='boxFF0']">
+      <par_instantiation>ChanSR=ChanSR0; ChanOut=ChanOut0;</par_instantiation>
+    </transitions>
+    <transitions name="T5" source="//@machines[name='MRegister']/@vertexes[name='forkRegister']" destination="//@machines[name='MRegister']/@vertexes[name='boxFF1']">
+      <par_instantiation>ChanSR=ChanSR1; ChanOut=ChanOut1;</par_instantiation>
+    </transitions>
+    <transitions name="T6" source="//@machines[name='MRegister']/@vertexes[name='forkRegister']" destination="//@machines[name='MRegister']/@vertexes[name='boxFF2']">
+      <par_instantiation>ChanSR=ChanSR2; ChanOut=ChanOut2;</par_instantiation>
+    </transitions>
+    <transitions name="T7" source="//@machines[name='MRegister']/@vertexes[name='forkRegister']" destination="//@machines[name='MRegister']/@vertexes[name='boxFF3']" entering_node="//@machines[name='MFlipFlop']/@vertexes[name='byOne']">
+      <par_instantiation>ChanSR=ChanSR3; ChanOut=ChanOut3;</par_instantiation>
+    </transitions>
+    <transitions name="T8" trigger="PowerOff?" condition="(PowerOff[?&lt;true>] &amp;&amp; VCont>0)" is_preemptive="true" source="//@machines[name='MRegister']/@vertexes[name='idle']" destination="//@machines[name='MRegister']/@vertexes[name='joinRegister']"/>
+    <transitions name="T9" source="//@machines[name='MRegister']/@vertexes[name='boxFF0']" destination="//@machines[name='MRegister']/@vertexes[name='joinRegister']"/>
+    <transitions name="T10" source="//@machines[name='MRegister']/@vertexes[name='boxFF1']" destination="//@machines[name='MRegister']/@vertexes[name='joinRegister']"/>
+    <transitions name="T11" source="//@machines[name='MRegister']/@vertexes[name='boxFF2']" destination="//@machines[name='MRegister']/@vertexes[name='joinRegister']"/>
+    <transitions name="T12" source="//@machines[name='MRegister']/@vertexes[name='boxFF3']" destination="//@machines[name='MRegister']/@vertexes[name='joinRegister']"/>
+    <transitions name="T13" source="//@machines[name='MRegister']/@vertexes[name='joinRegister']" destination="//@machines[name='MRegister']/@vertexes[name='exitingRegister']">
+      <actions>VCont=(VCont--);</actions>
+    </transitions>
+  </machines>
+  <machines name="MFlipFlop">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="initFlipFlop"/>
+    <vertexes xsi:type="dstm4rail:EnteringNode" name="byOne"/>
+    <vertexes xsi:type="dstm4rail:Node" name="Q0"/>
+    <vertexes xsi:type="dstm4rail:Node" name="Q1"/>
+    <transitions name="T14" trigger="" condition="" source="//@machines[name='MFlipFlop']/@vertexes[name='initFlipFlop']" destination="//@machines[name='MFlipFlop']/@vertexes[name='Q0']">
+      <actions>ChanOut!&lt;bit::bit0>;</actions>
+    </transitions>
+    <transitions name="T15" source="//@machines[name='MFlipFlop']/@vertexes[name='byOne']" destination="//@machines[name='MFlipFlop']/@vertexes[name='Q1']">
+      <actions>ChanOut!&lt;bit::bit1>;</actions>
+    </transitions>
+    <transitions name="T16" trigger="ChanSR?" condition="ChanSR[?&lt;bit::bit0,_>]" source="//@machines[name='MFlipFlop']/@vertexes[name='Q0']" destination="//@machines[name='MFlipFlop']/@vertexes[name='Q0']">
+      <actions>ChanOut!&lt;bit::bit0>;</actions>
+    </transitions>
+    <transitions name="T17" trigger="ChanSR?" condition="ChanSR[?&lt;bit::bit1,bit::bit0>]" source="//@machines[name='MFlipFlop']/@vertexes[name='Q0']" destination="//@machines[name='MFlipFlop']/@vertexes[name='Q1']">
+      <actions>ChanOut!&lt;bit::bit1>;</actions>
+    </transitions>
+    <transitions name="T18" trigger="ChanSR?" condition="ChanSR[?&lt;_,bit::bit0>]" source="//@machines[name='MFlipFlop']/@vertexes[name='Q1']" destination="//@machines[name='MFlipFlop']/@vertexes[name='Q1']">
+      <actions>ChanOut!&lt;bit::bit1>;</actions>
+    </transitions>
+    <transitions name="T19" trigger="ChanSR?" condition="ChanSR[?&lt;bit::bit0,bit::bit1>]" source="//@machines[name='MFlipFlop']/@vertexes[name='Q1']" destination="//@machines[name='MFlipFlop']/@vertexes[name='Q0']">
+      <actions>ChanOut!&lt;bit::bit0>;</actions>
+    </transitions>
+  </machines>
+</dstm4rail:DSTM>

@@ -1,0 +1,250 @@
+[comment encoding = UTF-8 /]
+[module generate('http://promelamm')]
+
+
+[template public generate(aModel : Model)]
+[comment @main/]
+[file ('spin_model.pml', false, 'UTF-8')]
+#define MAX_PROC [aModel.max_proc /]  // maximum number of concurrent processes
+mtype LastState, LastTransition;
+// Data objects needed to properly model the system 
+bit isFirstDescent = 1;
+bit HasToken['[MAX_PROC]'/];
+bit HasFired = 0;
+bit dyingPid['[MAX_PROC]'/];
+bit HasExecuted['[MAX_PROC]'/]; //set if pid executed in current step
+bit descendantExecuted['[MAX_PROC]'/];
+bit updateState = 0;
+mtype = {term,interrupt}; //messages for termination-signalling channels
+[for ( e : Enumeration | aModel.enumerations ) ]
+[ generateEnum(e) /]
+[/for]
+mtype = {ready,backProp};
+
+//structure needed to keep track of the process hierarchy
+typedef childrenArray {
+    bit children['[MAX_PROC]'/];
+}
+
+childrenArray ChildrenMatrix['[MAX_PROC]'/];
+
+//global variables for test case gen.
+[for (v : Primitive | aModel.variables->select(p | p.oclIsTypeOf(Primitive)) )]
+[ generatePrimitiveVariableInit(v) /]
+[/for]
+
+[for (c : Channel | aModel.variables->select(p | p.oclIsTypeOf(Channel)) )]
+[ generateChannelInit(c) /]
+[/for]
+
+[for (a : Array | aModel.variables->select(p | p.oclIsTypeOf(Array)) )]
+[ generateArray(a) /]
+[/for]
+
+[for (proc : Process | aModel.processes)]
+[generateProcess(proc)/]
+[/for]
+
+[/file]
+[/template]
+
+[template public generateEnum(enum : Enumeration )]
+[if (not (enum.name='Bool'))]mtype = {[for( e : String | enum.literals )separator(',')][ e /][/for]};[/if]
+[/template]
+
+[template public generateChannelInit(achan : Channel )]
+[if achan.eClass().name.equalsIgnoreCase('channel')]chan [achan.name/] = [if (achan.size=-1)]['[MAX_PROC]'/][else]['['/][achan.size/][']'/][/if] of {[if (achan.external or achan.annotations='multitype')]['bit,'/][/if][for (e : DefaultType | achan.types) separator(',')][ e.toString()/][/for]};[/if]
+[/template]
+
+[template public generateChannel(achan : Channel )]
+	[if achan.eClass().name.equalsIgnoreCase('channel')]chan [achan.name/] = [if (achan.size=-1)]['[MAX_PROC]'/][else]['['/][achan.size/][']'/][/if] of {[if (achan.external or achan.annotations='multitype')]['bit,'/][/if][for (e : DefaultType | achan.types) separator(',')][ e.toString()/][/for]};[/if]
+[/template]
+
+[template public generatePrimitiveVariable(var : Primitive)]
+	[var.type/] [var.name/][if not var.initialValue.oclIsUndefined()]=[var.initialValue/][/if];
+[/template]
+
+[template public generatePrimitiveVariableInit(var : Primitive)]
+[var.type/] [var.name/][if not var.initialValue.oclIsUndefined()]=[var.initialValue/][/if];
+[/template]
+
+[template public generateArray(a : Array)]
+[a.type/] [a.name/]['[MAX_PROC]'/] ;
+[/template]
+
+[template public generateProcess(proc: Process)]
+[if proc.isActive]active [/if]proctype [proc.name/](pid parent; mtype initial;[for (par : Parameter | proc.parameters)separator(';')][par.type/] [par.name/][/for]) {
+
+	byte i;
+	pid PidTemp;
+
+[for (c : Channel | proc.procVariables->select(p | p.oclIsTypeOf(Channel)) )]
+[ generateChannel(c) /]
+[/for]
+[for (v : Primitive | proc.procVariables->select(p | p.oclIsTypeOf(Primitive)) )]
+[ generatePrimitiveVariable(v) /]
+[/for]
+[for (do : Do | proc.processStatements->select(p | p.oclIsTypeOf(Do)))]
+[generateDo(do, proc)/]
+[/for]
+[for (ifStmt : If | proc.processStatements->select(p | p.oclIsTypeOf(If)))]
+[generateIf(ifStmt, proc)/]
+[/for]
+}
+[/template]
+
+[template public generateDo(do : Do, proc : Process)]
+	
+	do
+	[for (subStmt : SimpleStatement | do.subStatements->select(oclIsKindOf(SimpleStatement)))]
+		[for(description : String | subStmt.description)]
+		[description/];
+		[/for]		
+	[/for]	
+	[for (case : Case | do.subStatements->select(oclIsKindOf(Case)))]
+		[generateDoCases(case)/]
+	[/for]
+		:: (state == backProp && descendantExecuted['[_pid]'/]==1 && didBackProp==0) ->
+		    atomic{
+				didBackProp=1;
+		        descendantExecuted['[parent]'/]=1;
+		    }
+		
+		:: (state == backProp && updateState==1)->
+			atomic{
+				state = nextState;
+				state = backProp;
+			}
+
+	od unless {
+		(chTerm?['[1]'/] ||  dyingPid['[parent]'/]==1);
+		if
+			::chTerm?['[1]'/] -> chTerm?1;
+		fi;
+		dyingPid['[_pid]'/]=1;
+	}
+
+[/template]
+
+[template public generateDoCases(case: Case)]
+:: ([case.condition.toString()/]) ->
+	atomic{
+		[for (simpleStmt : SimpleStatement | case.subStatements->select(p | p.oclIsTypeOf(SimpleStatement)))]
+		[for(description : String | simpleStmt.description)]
+		[description/];
+		[/for]
+		[/for]
+		didBackProp=0;
+		if
+		[for (ifStmt : If | case.subStatements ->select(p | p.oclIsTypeOf(If)))]
+			[generateSubCases(ifStmt)/]
+		[/for]
+			:: else ->
+				if
+					:: HasExecuted['[_pid]'/]==0 ->		//only if this proc did not execute directly in phase 1
+						for (i : 0 .. MAX_PROC-1) {
+							if::(ChildrenMatrix['[_pid]'/].children['[i]'/]==1)->
+								HasToken['[i]'/]=1;      //pass token to children 
+							::else->skip;
+							fi;
+						}
+					::else->skip;
+				fi;
+		fi;
+		nextState = state;
+		state = backProp;
+	}
+
+[/template]
+
+[template public generateSubCases(ifStmt : If)]
+:: ([ifStmt.condition.toString()/] && descendantExecuted['[_pid]'/]==0) ->
+	[for(description : String | ifStmt.description)]
+	[description/];
+	[/for]
+	HasFired=1;
+	HasExecuted['[_pid]'/]=1; 
+	descendantExecuted['[_pid]'/]=1;
+[/template]
+
+[template public generateIf(ifStmt: If, proc : Process)]
+if
+:: ([ifStmt.condition.toString()/]) ->
+atomic{
+[for (simpleStmt : SimpleStatement | ifStmt.subStatements->select(p | p.oclIsTypeOf(SimpleStatement)))]
+		[for(description : String | simpleStmt.description)]
+		[description/];
+		[/for]
+[/for]
+[for (subIfStmt : If | ifStmt.subStatements->select(p | p.oclIsTypeOf(If)))]
+		[generateSubCases(subIfStmt)/]
+[/for]
+
+fi;
+	}
+
+[/template]
+
+[template public generateChannelLenIf(ifStmt: If, proc : Process)]
+if
+:: ([ifStmt.condition.toString()/]) ->
+  if
+	::(1)->
+[for (subIfStmt : If | ifStmt.subStatements->select(p | p.oclIsTypeOf(If)))]
+		[comment]:: ([subIfStmt.condition.toString()/])->[/comment]
+		if
+		[for (subSubIfStmt : If | subIfStmt.subStatements->select(p | p.oclIsTypeOf(If)))]
+			:: [subSubIfStmt.condition.toString()/]
+			[comment]INIZIO PARTE NUOVA[/comment]
+			 [if subSubIfStmt.subStatements->size()>0]
+			[for (internalSubStmt : If | subSubIfStmt.subStatements->select(p | p.oclIsTypeOf(If)))]
+				(1) -> [internalSubStmt.condition/]
+			[/for]
+			[for (c : Channel | proc.model.variables->select(p | p.oclIsTypeOf(Channel)))]
+			[if (ifStmt.condition.contains(c.name))][c.name/]!1,[for(tempChan : Variable | proc.procVariables->select(p | p.oclIsTypeOf(Primitive) and p.name.contains(c.name)))separator(',')][tempChan.name/][comment]printf("<ENGINE: [c.name/] - generated %e>\n", [tempChan.name/])[/comment][/for];
+			[/if]		
+			[/for]
+			[comment]FINE PARTE NUOVA[/comment]
+			[/if]
+			[for(description : String | subSubIfStmt.description)]
+				[description/];
+			[/for]	
+		[/for]
+		fi;
+		[comment][for (c : Channel | proc.model.variables->select(p | p.oclIsTypeOf(Channel)))]
+		[if (ifStmt.condition.contains(c.name))][c.name/]!1,[for(tempChan : Variable | proc.procVariables->select(p | p.oclIsTypeOf(Primitive) and p.name.contains(c.name)))separator(',')][tempChan.name/];
+		printf("<ENGINE: [c.name/] - generated %e>\n", [tempChan.name/])[/for];
+		[/if]		
+		[/for][/comment]		
+[/for]
+
+		
+		[for (c : Channel | proc.model.variables->select(p | p.oclIsTypeOf(Channel)))]
+		[if (ifStmt.condition.contains(c.name))][c.name/]!1,[for(tempChan : Variable | proc.procVariables->select(p | p.oclIsTypeOf(Primitive) and p.name.contains(c.name)))separator(',')][tempChan.name/][comment]printf("<ENGINE: [c.name/] - generated %e>\n", [tempChan.name/])[/comment][/for];
+		[/if]		
+		[/for]
+
+	::(1) ->	
+		[for(description : String | ifStmt.description)]
+		[description/];
+		[/for]
+	[for (c : Channel | proc.model.variables->select(p | p.oclIsTypeOf(Channel)) )]
+	[if (c.external=true and ifStmt.condition.toString().contains(c.name))]
+		[c.name/]!0,[for (val : DefaultType | c.types )separator (',')]0[/for]
+		printf("<ENGINE [c.name/] - generated EMPTY>");
+	[/if]
+	[/for]
+	fi;
+
+	:: else ->
+	printf("ENGINE: [ifStmt.condition.toString().replace('len','').replace('==1','')/] - generated BY SYSTEM>\n");
+ fi;
+[for (c : Channel | proc.model.variables->select(p | p.oclIsTypeOf(Channel)) )]
+[if (ifStmt.condition.contains(c.name))][c.name/]?temp,[for(tempChan : Variable | proc.procVariables->select(p | p.oclIsTypeOf(Primitive) and p.name.contains(c.name)))separator(',')][tempChan.name/][/for];[/if]
+[/for]
+[comment][for (simpleStmt : SimpleStatement | ifStmt.subStatements->select(p | p.oclIsTypeOf(SimpleStatement)))]
+		[for(description : String | simpleStmt.description)]
+		[description/];
+		[/for]
+[/for][/comment]
+[/template]

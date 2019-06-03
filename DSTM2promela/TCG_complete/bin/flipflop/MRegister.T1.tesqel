@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ASCII"?>
+<tesqel:TestSequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tesqel="tesqel" name="MRegister.T1">
+  <initial>MRegister.initRegister</initial>
+  <compoundFiring>
+    <firing>
+      <phase xsi:type="tesqel:Action" rvalue="0" lvalue="VCont"/>
+      <current>MRegister.initRegister</current>
+      <transition>MRegister.T1</transition>
+      <next>MRegister.idle</next>
+      <next>MRegister.boxFF0</next>
+      <next>MRegister.boxFF1</next>
+      <next>MRegister.boxFF2</next>
+      <next>MRegister.boxFF3</next>
+    </firing>
+    <IOmessage channel="PowerOn" message="&lt;0>"/>
+    <IOmessage channel="PowerOff" message="&lt;0>"/>
+    <IOmessage channel="ChanSR0" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut0" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR1" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut1" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR2" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut2" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR3" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut3" message="&lt;bit0>"/>
+  </compoundFiring>
+</tesqel:TestSequence>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<tesqel:TestSequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tesqel="tesqel" name="MCommunicationEstablishment.T01">
+  <initial>MCommunicationEstablishment.initial</initial>
+  <compoundFiring>
+    <firing>
+      <phase xsi:type="tesqel:Action" rvalue="0" lvalue="Vcont"/>
+      <current>MCommunicationEstablishment.initial</current>
+      <transition>MCommunicationEstablishment.T01</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+</tesqel:TestSequence>

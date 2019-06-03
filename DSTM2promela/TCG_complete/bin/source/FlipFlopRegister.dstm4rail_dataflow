@@ -1,0 +1,20 @@
+// DataFlow file about FlipFlopRegister.dstm4rail_dstm4rail
+// Date generation : 25/09/2015 at 07:44:28 PM CEST
+
+Enum bit {bit0, bit1};
+Struct couple {bit, bit};
+Int VCont;
+
+Chn external PowerOn of Bool;
+Chn external PowerOff of Bool; 
+Chn external ChanSR0 of couple;
+Chn external ChanOut0 of bit;
+Chn external ChanSR1 of couple;
+Chn external ChanOut1 of bit;
+Chn external ChanSR2 of couple;
+Chn external ChanOut2 of bit;
+Chn external ChanSR3 of couple;
+Chn external ChanOut3 of bit;
+
+Param ChanSR:Chn [couple] of MFlipFlop;
+Param ChanOut:Chn [bit] of MFlipFlop;

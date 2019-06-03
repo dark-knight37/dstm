@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dstm4rail:DSTM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dstm4rail="dstm4rail" name="prelationTest" main="//@machines[name='Main']">
+  <machines name="Main">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="InitialMain"/>
+    <vertexes xsi:type="dstm4rail:Box" name="BoxMain" instantiation="//@machines[name='SendMessage'] //@machines[name='WaitMessage']"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="ExitingMain"/>
+    <transitions name="T1" source="//@machines[name='Main']/@vertexes[name='InitialMain']" destination="//@machines[name='Main']/@vertexes[name='BoxMain']"/>
+    <transitions name="T2" source="//@machines[name='Main']/@vertexes[name='BoxMain']" destination="//@machines[name='Main']/@vertexes[name='ExitingMain']"/>
+  </machines>
+  <machines name="WaitMessage">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="InitialWaitMessage"/>
+    <vertexes xsi:type="dstm4rail:Box" name="BoxWaitMessage" instantiation="//@machines[name='M1']"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="ExitingWaitMessage"/>
+    <transitions name="T3" source="//@machines[name='WaitMessage']/@vertexes[name='InitialWaitMessage']" destination="//@machines[name='WaitMessage']/@vertexes[name='BoxWaitMessage']"/>
+    <transitions name="T4" trigger="signal?" source="//@machines[name='WaitMessage']/@vertexes[name='BoxWaitMessage']" destination="//@machines[name='WaitMessage']/@vertexes[name='ExitingWaitMessage']"/>
+  </machines>
+  <machines name="M1">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="InitialM1"/>
+    <vertexes xsi:type="dstm4rail:Box" name="BoxM1" instantiation="//@machines[name='M2']"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="ExitingM1"/>
+    <transitions name="T5" source="//@machines[name='M1']/@vertexes[name='InitialM1']" destination="//@machines[name='M1']/@vertexes[name='BoxM1']"/>
+    <transitions name="T6" source="//@machines[name='M1']/@vertexes[name='BoxM1']" destination="//@machines[name='M1']/@vertexes[name='ExitingM1']"/>
+  </machines>
+  <machines name="M2">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="InitialM2"/>
+    <vertexes xsi:type="dstm4rail:Box" name="BoxM2" instantiation="//@machines[name='SimpleMachine']"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="ExitingM2"/>
+    <transitions name="T7" source="//@machines[name='M2']/@vertexes[name='InitialM2']" destination="//@machines[name='M2']/@vertexes[name='BoxM2']"/>
+    <transitions name="T8" source="//@machines[name='M2']/@vertexes[name='BoxM2']" destination="//@machines[name='M2']/@vertexes[name='ExitingM2']"/>
+  </machines>
+  <machines name="SendMessage">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="InitialSendMessage"/>
+    <vertexes xsi:type="dstm4rail:Node" name="ReadyToSend"/>
+    <vertexes xsi:type="dstm4rail:Node" name="SendingSignal"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="ExitingSendMessage"/>
+    <transitions name="T12" source="//@machines[name='SendMessage']/@vertexes[name='InitialSendMessage']" destination="//@machines[name='SendMessage']/@vertexes[name='ReadyToSend']"/>
+    <transitions name="T13" condition="counter > 0" source="//@machines[name='SendMessage']/@vertexes[name='ReadyToSend']" destination="//@machines[name='SendMessage']/@vertexes[name='SendingSignal']"/>
+    <transitions name="T14" source="//@machines[name='SendMessage']/@vertexes[name='SendingSignal']" destination="//@machines[name='SendMessage']/@vertexes[name='ExitingSendMessage']">
+    	<actions>signal!&lt;true>;</actions>
+    </transitions>
+  </machines>
+  <machines name="SimpleMachine">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="InitialSimple"/>
+    <vertexes xsi:type="dstm4rail:Node" name="S1"/>
+    <vertexes xsi:type="dstm4rail:Node" name="S2"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="ExitingSimple"/>
+    <transitions name="T9" source="//@machines[name='SimpleMachine']/@vertexes[name='InitialSimple']" destination="//@machines[name='SimpleMachine']/@vertexes[name='S1']">
+      <actions>counter=(counter++);</actions>
+    </transitions>
+    <transitions name="T10" condition="counter&lt;0" source="//@machines[name='SimpleMachine']/@vertexes[name='S1']" destination="//@machines[name='SimpleMachine']/@vertexes[name='S2']"/>
+    <transitions name="T11" source="//@machines[name='SimpleMachine']/@vertexes[name='S2']" destination="//@machines[name='SimpleMachine']/@vertexes[name='ExitingSimple']"/>
+  </machines>
+</dstm4rail:DSTM>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dstm4rail:DSTM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dstm4rail="dstm4rail" name="model" main="//@machines[name='Main']">
+  <machines name="Main">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="initial"/>
+    <vertexes xsi:type="dstm4rail:Node" name="Off"/>
+    <vertexes xsi:type="dstm4rail:Node" name="Wait"/>
+    <vertexes xsi:type="dstm4rail:Node" name="Ready"/>
+    <vertexes xsi:type="dstm4rail:Node" name="Set"/>
+    <vertexes xsi:type="dstm4rail:Node" name="Acc"/>
+    <transitions name="T01" source="//@machines[name='Main']/@vertexes[name='initial']" destination="//@machines[name='Main']/@vertexes[name='Off']">
+      <actions>T02=0;</actions>
+      <actions>T03=0;</actions>
+      <actions>T04=0;</actions>
+      <actions>T05=0;</actions>
+      <actions>T06=0;</actions>
+      <actions>T07=0;</actions>
+      <actions>T08=0;</actions>
+      <actions>T09=0;</actions>
+      <actions>T10=0;</actions>
+      <actions>T11=0;</actions>
+      <actions>T12=0;</actions>
+      <actions>T13=0;</actions>
+      <actions>T14=0;</actions>
+    </transitions>
+    <transitions name="T02" trigger="on?" condition="(on[?&lt;true>] &amp;&amp; T02==0)" source="//@machines[name='Main']/@vertexes[name='Off']" destination="//@machines[name='Main']/@vertexes[name='Ready']">
+      <actions>T02=1;</actions>
+    </transitions>
+    <transitions name="T03" trigger="on?" condition="(on[?&lt;true>] &amp;&amp; T03==0)" source="//@machines[name='Main']/@vertexes[name='Ready']" destination="//@machines[name='Main']/@vertexes[name='Off']">
+      <actions>T03=1;</actions>
+    </transitions>
+    <transitions name="T04" trigger="on?" condition="(on[?&lt;true>] &amp;&amp; T04==0)" source="//@machines[name='Main']/@vertexes[name='Set']" destination="//@machines[name='Main']/@vertexes[name='Off']">
+      <actions>T04=1;</actions>
+    </transitions>
+    <transitions name="T06" trigger="on?" condition="(on[?&lt;true>] &amp;&amp; T06==0)" source="//@machines[name='Main']/@vertexes[name='Acc']" destination="//@machines[name='Main']/@vertexes[name='Off']">
+      <actions>T06=1;</actions>
+    </transitions>
+    <transitions name="T05" trigger="on?" condition="(on[?&lt;true>] &amp;&amp; T05==0)" source="//@machines[name='Main']/@vertexes[name='Wait']" destination="//@machines[name='Main']/@vertexes[name='Off']">
+      <actions>T05=1;</actions>
+    </transitions>
+    <transitions name="T07" trigger="set?" condition="(set[?&lt;true>] &amp;&amp; T07==0)" source="//@machines[name='Main']/@vertexes[name='Ready']" destination="//@machines[name='Main']/@vertexes[name='Set']">
+      <actions>T07=1;</actions>
+    </transitions>
+    <transitions name="T08" trigger="brake?" condition="(brake[?&lt;true>] &amp;&amp; T08==0)" source="//@machines[name='Main']/@vertexes[name='Set']" destination="//@machines[name='Main']/@vertexes[name='Wait']">
+      <actions>T08=1;</actions>
+    </transitions>
+    <transitions name="T09" trigger="resume?" condition="(resume[?&lt;true>] &amp;&amp; T09==0)" source="//@machines[name='Main']/@vertexes[name='Wait']" destination="//@machines[name='Main']/@vertexes[name='Set']">
+      <actions>T09=1;</actions>
+    </transitions>
+    <transitions name="T10" trigger="accP?" condition="(accP[?&lt;true>] &amp;&amp; T10==0)" source="//@machines[name='Main']/@vertexes[name='Set']" destination="//@machines[name='Main']/@vertexes[name='Acc']">
+      <actions>T10=1;</actions>
+    </transitions>
+    <transitions name="T11" trigger="accR?" condition="(accR[?&lt;true>] &amp;&amp; T11==0)" source="//@machines[name='Main']/@vertexes[name='Acc']" destination="//@machines[name='Main']/@vertexes[name='Set']">
+      <actions>T11=1;</actions>
+    </transitions>
+    <transitions name="T12" trigger="fast?" condition="(fast[?&lt;true>] &amp;&amp; T12==0)" source="//@machines[name='Main']/@vertexes[name='Set']" destination="//@machines[name='Main']/@vertexes[name='Set']">
+      <actions>T12=1;</actions>
+    </transitions>
+    <transitions name="T13" trigger="slow?" condition="(slow[?&lt;true>] &amp;&amp; T13==0)" source="//@machines[name='Main']/@vertexes[name='Set']" destination="//@machines[name='Main']/@vertexes[name='Set']">
+      <actions>T13=1;</actions>
+    </transitions>
+    <transitions name="T14" trigger="correct?" condition="(correct[?&lt;true>] &amp;&amp; T14==0)" source="//@machines[name='Main']/@vertexes[name='Set']" destination="//@machines[name='Main']/@vertexes[name='Set']">
+      <actions>T14=1;</actions>
+    </transitions>
+  </machines>
+</dstm4rail:DSTM>

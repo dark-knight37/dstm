@@ -1,0 +1,121 @@
+import "data.xdstmdata";
+
+Machine Main {
+	vertexes {
+		InitialNode initial,
+		Node idle1,
+		Box counterBox {
+			instantiation (Counter)	
+		},
+		ExitingNode interrupted,
+		ExitingNode stopped
+	}
+	transitions {
+		Transition T1 {
+			source initial,
+			destination idle1
+		},
+		Transition T2 {
+			source idle1,
+			destination counterBox,
+			par_instantiation {"P_to=100"}
+		},
+		Transition T3 {
+			source counterBox,
+			destination interrupted,
+			trigger "signal?"
+		},
+		Transition T4 {
+			source counterBox,
+			exiting_node "Counter.limit",
+			destination stopped
+		}
+	}
+};
+
+Machine Counter {
+	vertexes {
+		InitialNode default,
+		Node idle2,
+		Fork fk,
+		Box boxIncr1 {instantiation (Incrementer)},
+		Box boxIncr2 {instantiation (Incrementer)},
+		Join jn,
+		ExitingNode limit
+	}
+	transitions {
+		Transition T5 {
+			source default,
+			destination idle2
+		},
+		Transition T6 {
+			source idle2,
+			destination fk
+		},
+		Transition T7 {
+			source fk,
+			destination boxIncr1,
+			par_instantiation {"P_limit=P_to"}
+		},
+		Transition T8 {
+			source fk,
+			destination boxIncr2,
+			entering_node "Incrementer.byTwo",
+			par_instantiation {"P_limit=P_to"}
+		},
+		Transition T9 {
+			source boxIncr1,
+			destination jn,
+			isPreemptive
+		},
+		Transition T10 {
+			source boxIncr2,
+			destination jn
+		},
+		Transition T11 {
+			source jn,
+			destination limit
+		}
+	}
+};
+
+Machine Incrementer {
+	vertexes {
+		InitialNode byOne,
+		EnteringNode byTwo,
+		Node simpleIncr,
+		Node doubleIncr,
+		ExitingNode finished
+	}
+	transitions {
+		Transition T12 {
+			source byOne,
+			destination simpleIncr
+		},
+		Transition T13 {
+			source byTwo,
+			destination doubleIncr
+		},
+		Transition T14 {
+			source simpleIncr,
+			destination simpleIncr,
+			condition "x<P_limit",
+			actions {"x=x+1"}
+		},
+		Transition T15 {
+			source doubleIncr,
+			destination doubleIncr,
+			actions {"x=x+2"}
+		},
+		Transition T16 {
+			source simpleIncr,
+			destination finished,
+			condition "x>=P_limit"
+		}
+	}
+};
+
+DSTM model {
+	machines = Main, Counter, Incrementer;
+	main Main;
+};

@@ -1,0 +1,11 @@
+//user-defined datatypes
+
+//channels
+Chn external signal of Bool;
+
+//global variables
+Int x;
+
+//machine parameters
+Param P_to:Int of Counter;
+Param P_limit:Int of Incrementer;

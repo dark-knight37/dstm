@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ASCII"?>
+<tesqel:TestSequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tesqel="tesqel" name="MSessionEstablishment.T01">
+  <initial>MCommunicationEstablishment.initial</initial>
+  <compoundFiring>
+    <firing>
+      <phase xsi:type="tesqel:Action" rvalue="0" lvalue="Vcont"/>
+      <current>MCommunicationEstablishment.initial</current>
+      <transition>MCommunicationEstablishment.T01</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+  </compoundFiring>
+  <compoundFiring order="1">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="Crequest" message="&lt;0>"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="&lt;accepted>" lvalue="Canswer" kind="send"/>
+      <phase xsi:type="tesqel:Action" order="2" rvalue="1" lvalue="Vcont"/>
+      <current>MCommunicationEstablishment.idle</current>
+      <current>MCommunicationEstablishment.manageTrain</current>
+      <transition>MCommunicationEstablishment.T03</transition>
+      <transition>MCommunicationEstablishment.T04</transition>
+      <transition>MCommunicationEstablishment.T05</transition>
+      <next>MCommunicationEstablishment.idle</next>
+      <next>MCommunicationEstablishment.manageTrain</next>
+    </firing>
+    <firing order="1">
+      <phase xsi:type="tesqel:Action" rvalue="&lt;SystemVersion,V1>" lvalue="CtoTrain" kind="send"/>
+      <current>MSessionEstablishment.initial</current>
+      <transition>MSessionEstablishment.T01</transition>
+      <next>MSessionEstablishment.waitForAck</next>
+    </firing>
+    <IOmessage channel="Crequest" message="&lt;0>"/>
+    <IOmessage channel="CfromTrain" message="&lt;SessionEstablished,L0,A0>"/>
+    <link from="//@compoundFiring.1/@firing.0" to="//@compoundFiring.1/@firing.1"/>
+  </compoundFiring>
+  <link from="//@compoundFiring.0" to="//@compoundFiring.1"/>
+</tesqel:TestSequence>

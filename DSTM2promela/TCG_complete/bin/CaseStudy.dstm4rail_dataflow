@@ -1,0 +1,51 @@
+Enum answer {accepted, refused};
+Enum version {V0, V1, V2};
+Enum registration {registered};
+Enum area {L0, L1};
+Enum msgId {SessionEstablished, Ack, TrainRegistration, SystemVersion, MovementAuthority};
+
+Struct MAnswer {answer};
+Struct MSessionEstablished {msgId, area, Int, Int};
+Struct MAck {msgId};
+Struct MTrainRegistration {msgId, registration};
+Struct MSystemVersion {msgId, version};
+Struct MMovementAuthority {msgId, Int};
+
+Mtype MTfrom {MSessionEstablished, MAck, MTrainRegistration};
+Mtype MTto {MSystemVersion, MMovementAuthority};
+
+Struct M_Request {Chn [MTfrom], Chn [MTto]};
+
+Int Vcont;
+Chn [MTfrom] VchFrom;
+Chn [MTto] VchTo;
+
+Chn internal Crequest [1] of MRequest;
+Chn external Canswer of MAnswer;
+Chn external CfromTrain1 of MTfrom;
+Chn external CtoTrain1 of MTto;
+Chn external CfromTrain2 of MTfrom;
+Chn external CtoTrain2 of MTto;
+Chn external CfromTrain3 of MTfrom;
+Chn external CtoTrain3 of MTto;
+Chn external CfromTrain4 of MTfrom;
+Chn external CtoTrain4 of MTto;
+
+Param PchFromMMT:Chn [MTfrom] of M_ManageTrain;
+Param PchToMMT:Chn [MTto] of M_ManageTrain;
+Param PchFromMSE:Chn [MTfrom] of M_SessionEstablishment;
+Param PchToMSE:Chn [MTto] of M_SessionEstablishment;
+Param PchFromMMA:Chn [MTfrom] of M_MovAuth;
+Param PchToMMA:Chn [MTto] of M_MovAuth;
+Param PchFromME:Chn [MTfrom] of M_Entry;
+Param PchToME:Chn [MTto] of M_Entry;
+Param PchFromMSOM:Chn [MTfrom] of M_StartOfMission;
+Param PchToMSOM:Chn [MTto] of M_StartOfMission;
+Param PchFromMCC:Chn [MTfrom] of M_CentralControl;
+Param PchToMCC:Chn [MTto] of M_CentralControl;
+Param PchFromMPMA:Chn [MTfrom] of M_PeriodicMA;
+Param PchToMPMA:Chn [MTto] of M_PeriodicMA;
+Param PchFromMEM:Chn [MTfrom] of M_EmergencyManagement;
+Param PchToMEM:Chn [MTto] of M_EmergencyManagement;
+Param PchFromMEOM:Chn [MTfrom] of M_EndOfMission;
+Param PchToMEOM:Chn [MTto] of M_EndOfMission;

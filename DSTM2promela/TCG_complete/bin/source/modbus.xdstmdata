@@ -1,0 +1,21 @@
+//enumerations
+Enum fcode {ReadInputRegister, WriteSingleRegister, UpdateAndRead, Exception};
+Enum subcode {NONE};
+Enum excode {NONE, x01, x02, x03, x04};
+//structures
+Struct toMasterMsg {fcode, excode, Int, Int};
+Struct toSlaveMsg {fcode, subcode, Int, Int};
+//multitypes
+Mtype messages {toMasterMsg, toSlaveMsg};
+//channels
+Chn external channel of messages;
+//master’s variables
+Int SlaveReg;
+//slave’s variables
+fcode vfcode;
+subcode vsubcode;
+Int vaddress;
+Int vvalue;
+Int Reg01;
+Int Reg02;
+excode exc;

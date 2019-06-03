@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dstm4rail:DSTM xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dstm4rail="dstm4rail" name="model" main="//@machines[name='MainTask']">
+  <machines name="MeteoTask">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="init"/>
+    <vertexes xsi:type="dstm4rail:Node" name="started"/>
+    <vertexes xsi:type="dstm4rail:Node" name="working"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="exit"/>
+    <transitions name="t0" source="//@machines[name='MeteoTask']/@vertexes[name='init']" destination="//@machines[name='MeteoTask']/@vertexes[name='started']"/>
+    <transitions name="t1" condition="command[?&lt;msg::StartTaskMeteo>]" source="//@machines[name='MeteoTask']/@vertexes[name='started']" destination="//@machines[name='MeteoTask']/@vertexes[name='working']"/>
+    <transitions name="t2" condition="command[?&lt;msg::EndTaskMeteo>]" source="//@machines[name='MeteoTask']/@vertexes[name='working']" destination="//@machines[name='MeteoTask']/@vertexes[name='exit']"/>
+  </machines>
+  <machines name="MezziTask">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="init"/>
+    <vertexes xsi:type="dstm4rail:Node" name="started"/>
+    <vertexes xsi:type="dstm4rail:Node" name="working"/>
+    <vertexes xsi:type="dstm4rail:ExitingNode" name="exit"/>
+    <transitions name="t0" source="//@machines[name='MezziTask']/@vertexes[name='init']" destination="//@machines[name='MezziTask']/@vertexes[name='started']"/>
+    <transitions name="t1" condition="command[?&lt;msg::StartTaskMezzi>]" source="//@machines[name='MezziTask']/@vertexes[name='started']" destination="//@machines[name='MezziTask']/@vertexes[name='working']"/>
+    <transitions name="t2" condition="command[?&lt;msg::EndTaskMezzi>]" source="//@machines[name='MezziTask']/@vertexes[name='working']" destination="//@machines[name='MezziTask']/@vertexes[name='exit']"/>
+  </machines>
+  <machines name="MainTask">
+    <vertexes xsi:type="dstm4rail:InitialNode" name="init"/>
+    <vertexes xsi:type="dstm4rail:Node" name="loading"/>
+    <vertexes xsi:type="dstm4rail:Node" name="wait"/>
+    <vertexes xsi:type="dstm4rail:Node" name="paused"/>
+    <vertexes xsi:type="dstm4rail:Box" name="runAllTasks" instantiation="//@machines[name='MeteoTask'] //@machines[name='MezziTask']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="runMeteo" instantiation="//@machines[name='MeteoTask']"/>
+    <vertexes xsi:type="dstm4rail:Box" name="runMezzi" instantiation="//@machines[name='MezziTask']"/>
+    <vertexes xsi:type="dstm4rail:Fork" name="f1"/>
+    <vertexes xsi:type="dstm4rail:Fork" name="f2"/>
+    <vertexes xsi:type="dstm4rail:Fork" name="f3"/>
+    <transitions name="t0" source="//@machines[name='MainTask']/@vertexes[name='init']" destination="//@machines[name='MainTask']/@vertexes[name='loading']"/>
+    <transitions name="t1" source="//@machines[name='MainTask']/@vertexes[name='loading']" destination="//@machines[name='MainTask']/@vertexes[name='f1']"/>
+    <transitions name="t2" source="//@machines[name='MainTask']/@vertexes[name='f1']" destination="//@machines[name='MainTask']/@vertexes[name='wait']"/>
+    <transitions name="t3" source="//@machines[name='MainTask']/@vertexes[name='f1']" destination="//@machines[name='MainTask']/@vertexes[name='runAllTasks']"/>
+    <transitions name="t4" condition="command[?&lt;msg::Pause>]" source="//@machines[name='MainTask']/@vertexes[name='wait']" destination="//@machines[name='MainTask']/@vertexes[name='paused']"/>
+    <transitions name="t5" condition="command[?&lt;msg::Resume>]" source="//@machines[name='MainTask']/@vertexes[name='paused']" destination="//@machines[name='MainTask']/@vertexes[name='wait']"/>
+    <transitions name="t6" condition="command[?&lt;msg::UpdateMezzi>]" source="//@machines[name='MainTask']/@vertexes[name='wait']" destination="//@machines[name='MainTask']/@vertexes[name='f2']"/>
+    <transitions name="t7" source="//@machines[name='MainTask']/@vertexes[name='f2']" destination="//@machines[name='MainTask']/@vertexes[name='wait']"/>
+    <transitions name="t8" source="//@machines[name='MainTask']/@vertexes[name='f2']" destination="//@machines[name='MainTask']/@vertexes[name='runMezzi']"/>
+    <transitions name="t9" condition="command[?&lt;msg::UpdateMeteo>]" source="//@machines[name='MainTask']/@vertexes[name='wait']" destination="//@machines[name='MainTask']/@vertexes[name='f3']"/>
+    <transitions name="t10" source="//@machines[name='MainTask']/@vertexes[name='f3']" destination="//@machines[name='MainTask']/@vertexes[name='wait']"/>
+    <transitions name="t11" source="//@machines[name='MainTask']/@vertexes[name='f3']" destination="//@machines[name='MainTask']/@vertexes[name='runMeteo']"/>
+  </machines>
+</dstm4rail:DSTM>

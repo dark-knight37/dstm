@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ASCII"?>
+<tesqel:TestSequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tesqel="tesqel" name="Main.T01">
+  <initial>Main.initial</initial>
+  <compoundFiring>
+    <firing>
+      <phase xsi:type="tesqel:Action" rvalue="0" lvalue="T02"/>
+      <phase xsi:type="tesqel:Action" order="1" rvalue="0" lvalue="T03"/>
+      <phase xsi:type="tesqel:Action" order="2" rvalue="0" lvalue="T04"/>
+      <phase xsi:type="tesqel:Action" order="3" rvalue="0" lvalue="T05"/>
+      <phase xsi:type="tesqel:Action" order="4" rvalue="0" lvalue="T06"/>
+      <phase xsi:type="tesqel:Action" order="5" rvalue="0" lvalue="T07"/>
+      <phase xsi:type="tesqel:Action" order="6" rvalue="0" lvalue="T08"/>
+      <phase xsi:type="tesqel:Action" order="7" rvalue="0" lvalue="T09"/>
+      <phase xsi:type="tesqel:Action" order="8" rvalue="0" lvalue="T10"/>
+      <phase xsi:type="tesqel:Action" order="9" rvalue="0" lvalue="T11"/>
+      <phase xsi:type="tesqel:Action" order="10" rvalue="0" lvalue="T12"/>
+      <phase xsi:type="tesqel:Action" order="11" rvalue="0" lvalue="T13"/>
+      <phase xsi:type="tesqel:Action" order="12" rvalue="0" lvalue="T14"/>
+      <current>Main.initial</current>
+      <transition>Main.T01</transition>
+      <next>Main.Off</next>
+    </firing>
+    <IOmessage channel="correct" message="&lt;0>"/>
+    <IOmessage channel="slow" message="&lt;0>"/>
+    <IOmessage channel="fast" message="&lt;0>"/>
+    <IOmessage channel="on" message="&lt;0>"/>
+    <IOmessage channel="set" message="&lt;0>"/>
+    <IOmessage channel="brake" message="&lt;0>"/>
+    <IOmessage channel="resume" message="&lt;0>"/>
+    <IOmessage channel="accP" message="&lt;0>"/>
+    <IOmessage channel="accR" message="&lt;0>"/>
+  </compoundFiring>
+</tesqel:TestSequence>

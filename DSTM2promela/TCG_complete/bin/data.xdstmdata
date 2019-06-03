@@ -1,0 +1,12 @@
+//user-defined datatypes
+Enum msg {msg};
+
+//channels
+Chn external signal of msg;
+
+//global variables
+Int x;
+
+//machine parameters
+Param P_to:Int of Counter;
+Param P_limit:Int of Incrementer;

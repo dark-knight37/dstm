@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ASCII"?>
+<tesqel:TestSequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:tesqel="tesqel" name="MezziTask.t1">
+  <initial>MainTask.init</initial>
+  <compoundFiring>
+    <firing>
+      <current>MainTask.init</current>
+      <transition>MainTask.t0</transition>
+      <next>MainTask.loading</next>
+    </firing>
+  </compoundFiring>
+  <compoundFiring order="1">
+    <firing>
+      <current>MainTask.loading</current>
+      <transition>MainTask.t1</transition>
+      <transition>MainTask.t2</transition>
+      <transition>MainTask.t3</transition>
+      <next>MainTask.wait</next>
+      <next>MainTask.runAllTasks</next>
+      <next>MainTask.runMezzi</next>
+      <next>MainTask.runMeteo</next>
+    </firing>
+    <firing order="1">
+      <current>SegnalazioniTask.init</current>
+      <transition>SegnalazioniTask.t0</transition>
+      <next>SegnalazioniTask.started</next>
+    </firing>
+    <firing order="2">
+      <current>MezziTask.init</current>
+      <transition>MezziTask.t0</transition>
+      <next>MezziTask.started</next>
+    </firing>
+    <firing order="3">
+      <current>MeteoTask.init</current>
+      <transition>MeteoTask.t0</transition>
+      <next>MeteoTask.started</next>
+    </firing>
+    <link from="//@compoundFiring.1/@firing.0" to="//@compoundFiring.1/@firing.1"/>
+    <link from="//@compoundFiring.1/@firing.1" to="//@compoundFiring.1/@firing.2"/>
+    <link from="//@compoundFiring.1/@firing.2" to="//@compoundFiring.1/@firing.3"/>
+  </compoundFiring>
+  <compoundFiring order="2">
+    <firing>
+      <current>MezziTask.started</current>
+      <transition>MezziTask.t1</transition>
+      <next>MezziTask.working</next>
+    </firing>
+    <IOmessage channel="command" message="&lt;StartTaskMezzi>"/>
+  </compoundFiring>
+  <link from="//@compoundFiring.0" to="//@compoundFiring.1"/>
+  <link from="//@compoundFiring.1" to="//@compoundFiring.2"/>
+</tesqel:TestSequence>

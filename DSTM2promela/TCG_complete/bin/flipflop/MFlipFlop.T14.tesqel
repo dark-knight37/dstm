@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ASCII"?>
+<tesqel:TestSequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tesqel="tesqel" name="MFlipFlop.T14">
+  <initial>MRegister.initRegister</initial>
+  <compoundFiring>
+    <firing>
+      <phase xsi:type="tesqel:Action" rvalue="0" lvalue="VCont"/>
+      <current>MRegister.initRegister</current>
+      <transition>MRegister.T1</transition>
+      <next>MRegister.idle</next>
+      <next>MRegister.boxFF0</next>
+      <next>MRegister.boxFF1</next>
+      <next>MRegister.boxFF2</next>
+      <next>MRegister.boxFF3</next>
+    </firing>
+    <IOmessage channel="PowerOn" message="&lt;0>"/>
+    <IOmessage channel="PowerOff" message="&lt;0>"/>
+    <IOmessage channel="ChanSR0" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut0" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR1" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut1" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR2" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut2" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR3" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut3" message="&lt;bit0>"/>
+  </compoundFiring>
+  <compoundFiring order="1">
+    <firing>
+      <phase xsi:type="tesqel:Trigger" channel="PowerOn" message="&lt;1>"/>
+      <phase xsi:type="tesqel:Condition" order="1" rvalue="&lt;1>" lvalue="PowerOn" kind="message"/>
+      <phase xsi:type="tesqel:Action" order="2" rvalue="1" lvalue="VCont"/>
+      <current>MRegister.idle</current>
+      <current>MRegister.boxFF0</current>
+      <current>MRegister.boxFF1</current>
+      <current>MRegister.boxFF2</current>
+      <current>MRegister.boxFF3</current>
+      <transition>MRegister.T2</transition>
+      <transition>MRegister.T3</transition>
+      <transition>MRegister.T4</transition>
+      <transition>MRegister.T5</transition>
+      <transition>MRegister.T6</transition>
+      <transition>MRegister.T7</transition>
+      <next>MRegister.idle</next>
+      <next>MRegister.boxFF0</next>
+      <next>MRegister.boxFF1</next>
+      <next>MRegister.boxFF2</next>
+      <next>MRegister.boxFF3</next>
+    </firing>
+    <firing order="1">
+      <phase xsi:type="tesqel:Action" rvalue="&lt;bit1>" lvalue="ChanOut" kind="send"/>
+      <current>MFlipFlop.byOne</current>
+      <transition>MFlipFlop.T15</transition>
+      <next>MFlipFlop.Q1</next>
+    </firing>
+    <firing order="2">
+      <phase xsi:type="tesqel:Action" rvalue="&lt;bit0>" lvalue="ChanOut" kind="send"/>
+      <current>MFlipFlop.initFlipFlop</current>
+      <transition>MFlipFlop.T14</transition>
+      <next>MFlipFlop.Q0</next>
+    </firing>
+    <IOmessage channel="PowerOn" message="&lt;1>"/>
+    <IOmessage channel="PowerOff" message="&lt;0>"/>
+    <IOmessage channel="ChanSR0" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut0" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR1" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut1" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR2" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut2" message="&lt;bit0>"/>
+    <IOmessage channel="ChanSR3" message="&lt;bit0,bit0>"/>
+    <IOmessage channel="ChanOut3" message="&lt;bit0>"/>
+    <link from="//@compoundFiring.1/@firing.0" to="//@compoundFiring.1/@firing.1"/>
+    <link from="//@compoundFiring.1/@firing.1" to="//@compoundFiring.1/@firing.2"/>
+  </compoundFiring>
+  <link from="//@compoundFiring.0" to="//@compoundFiring.1"/>
+</tesqel:TestSequence>

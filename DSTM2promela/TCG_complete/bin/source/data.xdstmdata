@@ -1,0 +1,3 @@
+Enum msg{Pause, Resume, StartTaskMezzi, EndTaskMezzi, StartTaskMeteo, EndTaskMeteo, UpdateMezzi, UpdateMeteo};
+
+Chn external command of msg;

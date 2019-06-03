@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/Tesqel/src" modelPluginID="Tesqel" modelName="Tesqel"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>tesqel.ecore</foreignModel>
+  <genPackages prefix="Tesqel" disposableProviderFactory="true" ecorePackage="tesqel.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="tesqel.ecore#//ActionKind">
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//ActionKind/assignment"/>
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//ActionKind/send"/>
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//ActionKind/read"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="tesqel.ecore#//ConditionKind">
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//ConditionKind/variable"/>
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//ConditionKind/message"/>
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//ConditionKind/isFull"/>
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//ConditionKind/isEmpty"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="tesqel.ecore#//Direction">
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//Direction/toSystem"/>
+      <genEnumLiterals ecoreEnumLiteral="tesqel.ecore#//Direction/fromSystem"/>
+    </genEnums>
+    <genClasses ecoreClass="tesqel.ecore#//TestSequence">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//TestSequence/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//TestSequence/specification"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//TestSequence/initial"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tesqel.ecore#//TestSequence/firings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tesqel.ecore#//TestSequence/initialset"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tesqel.ecore#//TestSequence/links"/>
+    </genClasses>
+    <genClasses ecoreClass="tesqel.ecore#//Firing">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tesqel.ecore#//Firing/phases"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Firing/current"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Firing/transition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Firing/next"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Firing/order"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="tesqel.ecore#//Phase">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Phase/order"/>
+    </genClasses>
+    <genClasses ecoreClass="tesqel.ecore#//Trigger">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Trigger/channel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Trigger/message"/>
+    </genClasses>
+    <genClasses ecoreClass="tesqel.ecore#//Condition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Condition/rvalue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Condition/lvalue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Condition/kind"/>
+    </genClasses>
+    <genClasses ecoreClass="tesqel.ecore#//CFOrder">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference tesqel.ecore#//CFOrder/from"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference tesqel.ecore#//CFOrder/to"/>
+    </genClasses>
+    <genClasses ecoreClass="tesqel.ecore#//Action">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Action/rvalue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Action/lvalue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Action/kind"/>
+    </genClasses>
+    <genClasses ecoreClass="tesqel.ecore#//CompoundFiring">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tesqel.ecore#//CompoundFiring/firings"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//CompoundFiring/order"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tesqel.ecore#//CompoundFiring/IOmessages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tesqel.ecore#//CompoundFiring/links"/>
+    </genClasses>
+    <genClasses ecoreClass="tesqel.ecore#//FOrder">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference tesqel.ecore#//FOrder/from"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference tesqel.ecore#//FOrder/to"/>
+    </genClasses>
+    <genClasses ecoreClass="tesqel.ecore#//Message">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Message/channel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Message/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tesqel.ecore#//Message/dir"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

@@ -7,7 +7,7 @@ mtype = {msg}; //message to be sent over signal
 mtype = {initState,idle1,counterBox,interrupted,stopped};
 mtype = {default,idle2,wait,limit};
 mtype = {byOne,byTwo,simpleIncr,doubleIncr,finished};
-mtype = {ready,backProp};
+mtype = {ready,backProp}; 
 mtype = {T1,T2,T3,T4,T5,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T6_T7_T8,T9_T10_T11};
 // Data objects needed to properly model the system 
 bit isFirstDescent = 1;

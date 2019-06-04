@@ -1,0 +1,53 @@
+// Any comments?
+
+Enum answer {accepted, refused};
+Enum version {V0, V1, V2};
+Enum registration {registered};
+Enum area {L0, L1};
+Enum msgId {SessionEstablished, Ack, TrainRegistration, SystemVersion, MovementAuthority};
+
+Struct M_Answer {answer};
+Struct M_SessionEstablished {msgId, area, Int, Int};
+Struct M_Ack {msgId};
+Struct M_TrainRegistration {msgId, registration};
+Struct M_SystemVersion {msgId, version};
+Struct M_MovementAuthority {msgId, Int};
+
+Mtype MT_from {M_SessionEstablished, M_Ack, M_TrainRegistration};
+Mtype MT_to {M_SystemVersion, M_MovementAuthority};
+
+Struct M_Request {Chn [MT_from], Chn [MT_to]};
+
+Int V_cont;
+Chn [MT_from] V_chFrom;
+Chn [MT_to] V_chTo;
+
+Chn internal C_request [1] of M_Request;
+Chn external C_answer of M_Answer;
+Chn external C_fromTrain_1 of MT_from;
+Chn external C_toTrain_1 of MT_to;
+Chn external C_fromTrain_2 of MT_from;
+Chn external C_toTrain_2 of MT_to;
+Chn external C_fromTrain_3 of MT_from;
+Chn external C_toTrain_3 of MT_to;
+Chn external C_fromTrain_4 of MT_from;
+Chn external C_toTrain_4 of MT_to;
+
+Param P_chFromMMT:Chn [MT_from] of M_ManageTrain;
+Param P_chToMMT:Chn [MT_to] of M_ManageTrain;
+Param P_chFromMSE:Chn [MT_from] of M_SessionEstablishment;
+Param P_chToMSE:Chn [MT_to] of M_SessionEstablishment;
+Param P_chFromMMA:Chn [MT_from] of M_MovAuth;
+Param P_chToMMA:Chn [MT_to] of M_MovAuth;
+Param P_chFromME:Chn [MT_from] of M_Entry;
+Param P_chToME:Chn [MT_to] of M_Entry;
+Param P_chFromMSOM:Chn [MT_from] of M_StartOfMission;
+Param P_chToMSOM:Chn [MT_to] of M_StartOfMission;
+Param P_chFromMCC:Chn [MT_from] of M_CentralControl;
+Param P_chToMCC:Chn [MT_to] of M_CentralControl;
+Param P_chFromMPMA:Chn [MT_from] of M_PeriodicMA;
+Param P_chToMPMA:Chn [MT_to] of M_PeriodicMA;
+Param P_chFromMEM:Chn [MT_from] of M_EmergencyManagement;
+Param P_chToMEM:Chn [MT_to] of M_EmergencyManagement;
+Param P_chFromMEOM:Chn [MT_from] of M_EndOfMission;
+Param P_chToMEOM:Chn [MT_to] of M_EndOfMission;

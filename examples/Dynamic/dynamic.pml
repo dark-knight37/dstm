@@ -11,7 +11,7 @@ mtype = {T1,T2_T3_T4,T5_T6_T7};
 mtype = {T12,T13,T14,T15,T16};
 // Data objects needed to properly model the system 
 bit isFirstDescent = 1;
-bit HasToken[MAX_PROC];
+bit HasToken[MAX_PROC]; 
 bit HasFired = 0;
 bit dyingPid[MAX_PROC];
 bit HasExecuted[MAX_PROC]; //set if pid executed in current step
